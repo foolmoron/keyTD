@@ -28,11 +28,13 @@ public class Key : MonoBehaviour {
     };
 
     public KeyCodeSubset AssignedKey;
-    public GameObject OnTapPrefab;
+    public string OnTapAnim;
 
+    Animator animator;
     TextMesh label;
 
 	void Start() {
+	    animator = GetComponent<Animator>();
 	    label = GetComponentInChildren<TextMesh>();
 	}
 	
@@ -44,8 +46,8 @@ public class Key : MonoBehaviour {
 
 	    if (!Application.isPlaying) return;
 
-        if (Input.GetKeyDown(RealKeyCodes[(int)AssignedKey])) {
-	        Instantiate(OnTapPrefab, transform.position, transform.rotation);
+        if (Input.GetKey(RealKeyCodes[(int)AssignedKey])) {
+	        animator.Play(OnTapAnim, 0, 0);
 	    }
 	}
 }
