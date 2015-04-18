@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using System.Collections;
 
@@ -30,6 +31,8 @@ public class Key : MonoBehaviour {
     public KeyCodeSubset AssignedKey;
     public string OnTapAnim;
 
+    List<Enemy> enemiesHitThisFrame = new List<Enemy>(10);
+
     Animator animator;
     TextMesh label;
 
@@ -49,5 +52,18 @@ public class Key : MonoBehaviour {
         if (Input.GetKey(RealKeyCodes[(int)AssignedKey])) {
 	        animator.Play(OnTapAnim, 0, 0);
 	    }
+
+        if (enemiesHitThisFrame.Count > 0) {
+            enemiesHitThisFrame.Sort((enemy1, enemy2) => enemy1.transform.position.y.CompareTo(enemy2.transform.position.y));
+            enemiesHitThisFrame[0].Hit();
+            enemiesHitThisFrame.Clear();
+	    }
 	}
+
+    void OnTriggerEnter2D(Collider2D collision) {
+        var enemy = collision.transform.parent.GetComponent<Enemy>();
+        if (enemy) {
+            enemiesHitThisFrame.Add(enemy);
+        }
+    }
 }
