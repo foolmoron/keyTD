@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-    public Transform Target;
+    public Vector3 TargetPosition;
     [Range(0, 5)]
     public float Speed = 0.1f;
 
@@ -19,8 +19,8 @@ public class Enemy : MonoBehaviour {
     void Update() {
         // move and rotate to target
         {
-            transform.position = Vector3.MoveTowards(transform.position, Target.position, Speed * Time.deltaTime);
-            var vectorToTarget = Target.position - transform.position;
+            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, Speed * Time.deltaTime);
+            var vectorToTarget = TargetPosition - transform.position;
             transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg);
         }
         // color self based on health
@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour {
     public void Hit() {
         Health--;
         if (Health <= 0) {
+            FindObjectOfType<KillCounter>().Counter++;
             Destroy(gameObject);
         }
     }

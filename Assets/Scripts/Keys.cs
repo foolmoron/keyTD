@@ -89,10 +89,4 @@ public class Keys : MonoBehaviour {
             SetLayout(CurrentLayout);
         }
     }
-
-    void OnGUI() {
-        Event e = Event.current;
-        if (e.isKey && e.keyCode != KeyCode.None)
-            Debug.Log("Detected key code: " + e.keyCode);
-    }
 }
