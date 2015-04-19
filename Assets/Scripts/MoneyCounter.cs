@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KillCounter : MonoBehaviour {
+public class MoneyCounter : MonoBehaviour {
 
     public int Counter;
     TextMesh text;
@@ -11,6 +11,6 @@ public class KillCounter : MonoBehaviour {
     }
 
     void Update() {
-        text.text = Counter.ToString();
+        text.text = "$" + Counter;
     }
 }

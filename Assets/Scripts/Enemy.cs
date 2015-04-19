@@ -10,10 +10,16 @@ public class Enemy : MonoBehaviour {
     [Range(0, 10)]
     public int Health = 5;
 
+    [Range(0, 1000)]
+    public int Money;
+
     SpriteRenderer backgroundSprite;
+    TextMesh moneyText;
 
     void Start() {
         backgroundSprite = transform.FindChild("Background").GetComponentInChildren<SpriteRenderer>();
+        moneyText = transform.FindChild("MoneyText").GetComponent<TextMesh>();
+        moneyText.gameObject.SetActive(false);
     }
 
     void Update() {
@@ -32,8 +38,13 @@ public class Enemy : MonoBehaviour {
     public void Hit(int damage) {
         Health -= damage;
         if (Health <= 0) {
-            FindObjectOfType<KillCounter>().Counter++;
+            moneyText.text = "$" + Money;
+            moneyText.transform.parent = null;
+            moneyText.transform.rotation = Quaternion.identity;
+            moneyText.gameObject.SetActive(true);
+            FindObjectOfType<MoneyCounter>().Counter += Money;
             Destroy(gameObject);
+            Destroy(moneyText.gameObject, 1);
         }
     }
 }
