@@ -29,8 +29,8 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    public void Hit() {
-        Health--;
+    public void Hit(int damage) {
+        Health -= damage;
         if (Health <= 0) {
             FindObjectOfType<KillCounter>().Counter++;
             Destroy(gameObject);
