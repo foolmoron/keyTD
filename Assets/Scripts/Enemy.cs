@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour {
 
     [Range(0, 500)]
     public float Health = 5;
+    float initialHealth;
 
     [Range(0, 1000)]
     public int Money;
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour {
         backgroundSprite = transform.FindChild("Background").GetComponentInChildren<SpriteRenderer>();
         moneyText = transform.FindChild("MoneyText").GetComponent<TextMesh>();
         moneyText.gameObject.SetActive(false);
+        initialHealth = Health;
     }
 
     void Update() {
@@ -31,7 +33,7 @@ public class Enemy : MonoBehaviour {
         }
         // color self based on health
         {
-            backgroundSprite.color = backgroundSprite.color.withAlpha(Health / 10f);
+            backgroundSprite.color = backgroundSprite.color.withAlpha(Health / initialHealth);
         }
     }
 

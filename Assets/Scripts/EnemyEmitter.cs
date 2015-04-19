@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyEmitter : MonoBehaviour {
@@ -8,23 +9,37 @@ public class EnemyEmitter : MonoBehaviour {
     public Transform EnemyTarget;
     public Vector2 EnemyTargetVariance;
 
-    [Range(0, 30)]
+    public bool SpawningEnemies;
+    [Range(0, 60)]
     public float EnemySpawnInterval;
     [Range(0, 30)]
     public float TimeToNextSpawn;
-    [Range(0, 50)]
-    public int InitialEnemiesToSpawn;
+
+    List<Enemy> liveEnemiesSpawned = new List<Enemy>(50);
+    WaveTimer waveTimer;
 
     void Start() {
-        for (int i = 0; i < InitialEnemiesToSpawn; i++) {
-            Spawn();
-        }
+        waveTimer = FindObjectOfType<WaveTimer>();
     }
 
     void Update() {
-        TimeToNextSpawn -= Time.deltaTime;
-        if (TimeToNextSpawn <= 0) {
-            Spawn();
+        if (SpawningEnemies) {
+            TimeToNextSpawn -= Time.deltaTime;
+            if (TimeToNextSpawn <= 0) {
+                Spawn();
+            }
+        }
+
+        if (liveEnemiesSpawned.Count > 0) {
+            for (int i = 0; i < liveEnemiesSpawned.Count; i++) {
+                if (liveEnemiesSpawned[i] == null) {
+                    liveEnemiesSpawned.RemoveAt(i);
+                    i--;
+                }
+            }
+            if (liveEnemiesSpawned.Count == 0 && !SpawningEnemies) {
+                waveTimer.EndWave(true);
+            }
         }
     }
 
@@ -33,6 +48,7 @@ public class EnemyEmitter : MonoBehaviour {
         var newEnemy = (Enemy)Instantiate(EnemyPrefab, transform.position + spawnVariance, Quaternion.identity);
         var targetVariance = new Vector3((Random.value - 0.5f) * EnemyTargetVariance.x, (Random.value - 0.5f) * EnemyTargetVariance.y);
         newEnemy.TargetPosition = EnemyTarget.position + targetVariance;
+        liveEnemiesSpawned.Add(newEnemy);
         TimeToNextSpawn = EnemySpawnInterval;
     }
 }
