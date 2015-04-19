@@ -13,29 +13,59 @@ public class Key : MonoBehaviour {
     public Keys.CodeSubset AssignedKey;
     public string OnTapAnim;
 
+    [Range(0, 5)]
+    public int SingleHitLevel = 1;
+    [Range(0, 5)]
+    public int AOEHitLevel = 0;
+    [Range(0, 5)]
+    public int PushHitLevel = 0;
+    public bool PushHitFlip;
+
     Animator animator;
     TextMesh label;
 
+    SingleHit singleHit;
+    AOEHit aoeHit;
+    PushHit pushHit;
+
 	void Start() {
 	    animator = GetComponent<Animator>();
-	    label = GetComponentInChildren<TextMesh>();
+        label = GetComponentInChildren<TextMesh>();
+
+        singleHit = GetComponentInChildren<SingleHit>();
+        aoeHit = GetComponentInChildren<AOEHit>();
+        pushHit = GetComponentInChildren<PushHit>();
 	}
 	
 	void Update() {
 	    if (!Application.isPlaying)
 	        Start();
 
-        label.text = Keys.CodeStrings[(int)AssignedKey];
+        // set label 
+	    {
+	        label.text = Keys.CodeStrings[(int) AssignedKey];
+	    }
 
-	    if (!Application.isPlaying) return;
+        if (!Application.isPlaying) return;
 
-        if (Input.GetKeyDown(Keys.RealCodes[(int)AssignedKey])) {
-            OnTapDown(this, AssignedKey);
-	    } else if (Input.GetKey(Keys.RealCodes[(int)AssignedKey])) {
-	        animator.Play(OnTapAnim, 0, 0);
-            OnTapStay(this, AssignedKey);
-        } else if (Input.GetKeyUp(Keys.RealCodes[(int)AssignedKey])) {
-            OnTapUp(this, AssignedKey);
-        } 
+        // set upgrade states
+        {
+            singleHit.gameObject.SetActive(SingleHitLevel > 0);
+            aoeHit.gameObject.SetActive(AOEHitLevel > 0);
+            pushHit.gameObject.SetActive(PushHitLevel > 0);
+            pushHit.Flip = PushHitFlip;
+
+        }
+        // fire events and anim
+	    {
+	        if (Input.GetKeyDown(Keys.RealCodes[(int) AssignedKey])) {
+	            OnTapDown(this, AssignedKey);
+	        } else if (Input.GetKey(Keys.RealCodes[(int) AssignedKey])) {
+	            animator.Play(OnTapAnim, 0, 0);
+	            OnTapStay(this, AssignedKey);
+	        } else if (Input.GetKeyUp(Keys.RealCodes[(int) AssignedKey])) {
+	            OnTapUp(this, AssignedKey);
+	        }
+	    }
 	}
 }
