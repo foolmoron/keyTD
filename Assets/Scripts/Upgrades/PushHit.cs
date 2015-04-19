@@ -9,6 +9,7 @@ public class PushHit : MonoBehaviour {
     public float Distance = 0.1f;
     public bool Flip;
     List<Enemy> enemiesHitThisFrame = new List<Enemy>(10);
+    bool frameDelay;
 
     Key key;
     Animator animator;
@@ -24,6 +25,7 @@ public class PushHit : MonoBehaviour {
         arrow = transform.FindChild("Arrow").gameObject;
 
         key.OnTapDown += (theKey, code) => {
+            frameDelay = true;
             collider.enabled = true;
             animator.Play("PushHit", 0, 0);
         };
@@ -43,7 +45,10 @@ public class PushHit : MonoBehaviour {
                 hitEnemy.transform.position = hitEnemy.transform.position + new Vector3(Flip ? -Distance: Distance, 0, 0);
             }
         }
-        collider.enabled = false;
+        if (!frameDelay) {
+            collider.enabled = false;
+        }
+        frameDelay = false;
     }
 
     void OnTriggerEnter2D(Collider2D collision) {

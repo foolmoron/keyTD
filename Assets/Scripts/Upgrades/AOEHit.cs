@@ -15,6 +15,7 @@ public class AOEHit : MonoBehaviour {
     public float TimeToNextAOE;
     public Vector2 BaseSize = Vector2.one;
     public float BaseScale = 0.18f;
+    bool frameDelay;
 
     bool keyPressed;
 
@@ -54,7 +55,10 @@ public class AOEHit : MonoBehaviour {
         // enable collider for 1 frame when time to AOE runs out
         {
             collider.size = new Vector2(BaseSize.x * Range * interp, BaseSize.y * Range * interp);
-            collider.enabled = fireAOE;
+            if (!frameDelay) {
+                collider.enabled = fireAOE;
+            }
+            frameDelay = false;
         }
         // reset timer
         {

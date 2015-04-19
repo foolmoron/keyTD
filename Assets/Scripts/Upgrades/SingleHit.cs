@@ -8,6 +8,7 @@ public class SingleHit : MonoBehaviour {
     [Range(0, 10)]
     public int Damage = 1;
     List<Enemy> enemiesHitThisFrame = new List<Enemy>(10);
+    bool frameDelay;
 
     Key key;
     Animator animator;
@@ -22,8 +23,10 @@ public class SingleHit : MonoBehaviour {
 
         zapper = transform.FindChild("ZapperContainer").gameObject;
 
-        key.OnTapDown += (theKey, code) => 
+        key.OnTapDown += (theKey, code) => {
+            frameDelay = true;
             collider.enabled = true;
+        };
     }
 
     void Update() {
@@ -45,7 +48,10 @@ public class SingleHit : MonoBehaviour {
                 animator.Play("SingleHit", 0, 0);
             }
         }
-        collider.enabled = false;
+        if (!frameDelay) {
+            collider.enabled = false;
+        }
+        frameDelay = false;
     }
 
     void OnTriggerEnter2D(Collider2D collision) {
