@@ -8,7 +8,15 @@ using System.Collections;
 public class Key : MonoBehaviour {
     public event Action<Key, Keys.CodeSubset> OnTapDown = delegate { };
     public event Action<Key, Keys.CodeSubset> OnTapStay = delegate { };
-    public event Action<Key, Keys.CodeSubset> OnTapUp = delegate { }; 
+    public event Action<Key, Keys.CodeSubset> OnTapUp = delegate { };
+
+    public static Color[] LEVEL_COLORS = {
+        Color.white,
+        Color.green,
+        Color.blue,
+        new Color(170/255f, 0, 255/255f), 
+        new Color(255/255f, 60/255f, 0), 
+    };
 
     public Keys.CodeSubset AssignedKey;
     public string OnTapAnim;
@@ -37,6 +45,10 @@ public class Key : MonoBehaviour {
     AOEHit aoeHit;
     PushHit pushHit;
 
+    SpriteRenderer zapSprite;
+    SpriteRenderer blastSprite;
+    SpriteRenderer arrowSprite;
+
 	void Start() {
 	    animator = GetComponent<Animator>();
         label = transform.FindChild("keylabel").GetComponent<TextMesh>();
@@ -47,6 +59,10 @@ public class Key : MonoBehaviour {
         singleHit = GetComponentInChildren<SingleHit>();
         aoeHit = GetComponentInChildren<AOEHit>();
         pushHit = GetComponentInChildren<PushHit>();
+
+        zapSprite = transform.FindChild("SingleHit/ZapperContainer/Zapper").GetComponent<SpriteRenderer>();
+        blastSprite = transform.FindChild("AOEHit/Blast").GetComponent<SpriteRenderer>();
+        arrowSprite = transform.FindChild("PushHit/Arrow").GetComponent<SpriteRenderer>();
 	}
 	
 	void Update() {
@@ -62,7 +78,18 @@ public class Key : MonoBehaviour {
             label.color = Dead ? DeadColor : Color;
             border.color = Dead ? DeadColor : Color;
             border2.color = Dead ? DeadColor : Color;
-	    }
+
+            if (!Dead && SingleHitLevel > 0) {
+                zapSprite.color = LEVEL_COLORS[SingleHitLevel - 1];
+                border.color = LEVEL_COLORS[SingleHitLevel - 1];
+            }
+            if (!Dead && AOEHitLevel > 0) {
+                blastSprite.color = LEVEL_COLORS[AOEHitLevel - 1];
+            }
+            if (!Dead && PushHitLevel > 0) {
+                arrowSprite.color = LEVEL_COLORS[PushHitLevel - 1];
+            }
+        }
 
         if (!Application.isPlaying) return;
 
@@ -75,7 +102,6 @@ public class Key : MonoBehaviour {
             aoeHit.gameObject.SetActive(AOEHitLevel > 0);
             pushHit.gameObject.SetActive(PushHitLevel > 0);
             pushHit.Flip = PushHitFlip;
-
         }
         // fire events and anim
 	    {

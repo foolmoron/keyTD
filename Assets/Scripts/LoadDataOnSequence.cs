@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ClearDataOnSequence : MonoBehaviour {
+public class LoadDataOnSequence : MonoBehaviour {
+
+    public bool ClearDataBeforeLoad;
 
     public void Start() {
         var saveLoad = FindObjectOfType<SaveLoad>();
         GetComponent<KeySequence>().OnSequence += () => {
-            PlayerPrefs.DeleteAll();
+            if (ClearDataBeforeLoad) 
+                PlayerPrefs.DeleteAll();
             saveLoad.Load();
         };
     }

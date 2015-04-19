@@ -22,7 +22,8 @@ public class SingleHit : MonoBehaviour {
 
         zapper = transform.FindChild("ZapperContainer").gameObject;
 
-        key.OnTapDown += (theKey, code) => collider.enabled = true;
+        key.OnTapDown += (theKey, code) => 
+            collider.enabled = true;
     }
 
     void Update() {
