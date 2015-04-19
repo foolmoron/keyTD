@@ -10,7 +10,7 @@ public class Keys : MonoBehaviour {
         A, S, D, F, G, H, J, K, L, SemiColon, Apostrophe,
         Z, X, C, V, B, N, M, Comma, Period,
         Space,
-        Slash, BackQuote
+        Slash, BackQuote, Left, Right
     }
     public static string[] CodeStrings = {
         "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
@@ -18,7 +18,7 @@ public class Keys : MonoBehaviour {
         "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'",
         "Z", "X", "C", "V", "B", "N", "M", ",", ".",
         " ",
-        "/", "ù"
+        "/", "ù", "Left", "Right"
     };
     public static KeyCode[] RealCodes = {
         KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0, KeyCode.Minus, KeyCode.Equals,
@@ -26,7 +26,7 @@ public class Keys : MonoBehaviour {
         KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.Semicolon, KeyCode.Quote,
         KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M, KeyCode.Comma, KeyCode.Period,
         KeyCode.Space,
-        KeyCode.Slash, KeyCode.BackQuote
+        KeyCode.Slash, KeyCode.BackQuote, KeyCode.LeftArrow, KeyCode.RightArrow
     };
 
 
@@ -66,6 +66,7 @@ public class Keys : MonoBehaviour {
     };
 
     public Key[] KeyList;
+    public bool UpgradeMode;
     public Layout CurrentLayout = Layout.QWERTY;
     int oldLayout = -1;
 
@@ -79,14 +80,44 @@ public class Keys : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            CurrentLayout = (Layout)(((int)CurrentLayout - 1 + LayoutCount) % LayoutCount);
-        } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            CurrentLayout = (Layout)(((int)CurrentLayout + 1 + LayoutCount) % LayoutCount);
-        }
-
         if (oldLayout != (int)CurrentLayout) {
             SetLayout(CurrentLayout);
+        }
+
+        if (UpgradeMode) {
+            Key keyPressed = null;
+            for (int i = 0; i < KeyList.Length; i++) {
+                var code = RealCodes[i];
+                if (Input.GetKeyDown(code)) {
+                    keyPressed = KeyList[i];
+                }
+            }
+            if (keyPressed != null) {
+
+                var shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                var ctrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+                var leftAlt = Input.GetKey(KeyCode.LeftAlt);
+                var rightAlt =  Input.GetKey(KeyCode.RightAlt);
+
+                if (ctrl && leftAlt && !shift) { // left push
+                    if (keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
+                        keyPressed.PushHitLevel++;
+                    if (!keyPressed.PushHitFlip)
+                        keyPressed.PushHitFlip = true;
+                } else if (ctrl && rightAlt && !shift) { // right push
+                    if (!keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
+                        keyPressed.PushHitLevel++;
+                    if (keyPressed.PushHitFlip)
+                        keyPressed.PushHitFlip = false;
+                } else if (shift && !ctrl && !leftAlt && !rightAlt) { // single hit
+                    keyPressed.SingleHitLevel++;
+                } else if (shift && ctrl && !leftAlt && !rightAlt) { // aoe hit
+                    keyPressed.AOEHitLevel++;
+                } else if ((leftAlt || rightAlt) && shift) { // repair
+                    if (keyPressed.Dead)
+                        keyPressed.Dead = false;
+                }
+            }
         }
     }
 }

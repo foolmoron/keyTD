@@ -7,8 +7,8 @@ public class Enemy : MonoBehaviour {
     [Range(0, 5)]
     public float Speed = 0.1f;
 
-    [Range(0, 10)]
-    public int Health = 5;
+    [Range(0, 500)]
+    public float Health = 5;
 
     [Range(0, 1000)]
     public int Money;
