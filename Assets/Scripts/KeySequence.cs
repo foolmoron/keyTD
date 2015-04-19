@@ -35,14 +35,16 @@ public class KeySequence : MonoBehaviour {
         }
 
         if (previousHitInARow != HitInARow) {
+            previousHitInARow = HitInARow;
             for (int i = 0; i < KeyList.Length; i++) {
-                KeyList[i].Color = (i < HitInARow) ? HighlightColor : NormalColor;
+                KeyList[i].Color = (i < HitInARow && HitInARow != KeyList.Length) ? HighlightColor : NormalColor;
             }
             if (HitInARow == KeyList.Length) {
                 OnSequence();
-                Animator.Play(AnimationToCall, 0, 0);
+                if (!String.IsNullOrEmpty(AnimationToCall))
+                    Animator.Play(AnimationToCall, 0, 0);
+                HitInARow = 0;
             }
-            previousHitInARow = HitInARow;
         }
     }
 }

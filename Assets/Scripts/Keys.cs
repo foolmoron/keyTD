@@ -66,7 +66,6 @@ public class Keys : MonoBehaviour {
     };
 
     public Key[] KeyList;
-    public bool UpgradeMode;
     public Layout CurrentLayout = Layout.QWERTY;
     int oldLayout = -1;
 
@@ -82,42 +81,6 @@ public class Keys : MonoBehaviour {
     void Update() {
         if (oldLayout != (int)CurrentLayout) {
             SetLayout(CurrentLayout);
-        }
-
-        if (UpgradeMode) {
-            Key keyPressed = null;
-            for (int i = 0; i < KeyList.Length; i++) {
-                var code = RealCodes[i];
-                if (Input.GetKeyDown(code)) {
-                    keyPressed = KeyList[i];
-                }
-            }
-            if (keyPressed != null) {
-
-                var shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-                var ctrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-                var leftAlt = Input.GetKey(KeyCode.LeftAlt);
-                var rightAlt =  Input.GetKey(KeyCode.RightAlt);
-
-                if (ctrl && leftAlt && !shift) { // left push
-                    if (keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
-                        keyPressed.PushHitLevel++;
-                    if (!keyPressed.PushHitFlip)
-                        keyPressed.PushHitFlip = true;
-                } else if (ctrl && rightAlt && !shift) { // right push
-                    if (!keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
-                        keyPressed.PushHitLevel++;
-                    if (keyPressed.PushHitFlip)
-                        keyPressed.PushHitFlip = false;
-                } else if (shift && !ctrl && !leftAlt && !rightAlt) { // single hit
-                    keyPressed.SingleHitLevel++;
-                } else if (shift && ctrl && !leftAlt && !rightAlt) { // aoe hit
-                    keyPressed.AOEHitLevel++;
-                } else if ((leftAlt || rightAlt) && shift) { // repair
-                    if (keyPressed.Dead)
-                        keyPressed.Dead = false;
-                }
-            }
         }
     }
 }

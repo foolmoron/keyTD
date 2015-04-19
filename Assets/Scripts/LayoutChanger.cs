@@ -6,22 +6,21 @@ public class LayoutChanger : MonoBehaviour {
         "QWERTY", "AZERTY", "Dvorak", "Colemak"
     };
 
-    Keys keys;
+    public Keys Keys;
     TextMesh label;
 
 
     void Start() {
-        keys = FindObjectOfType<Keys>();
         label = transform.FindChild("Label").GetComponent<TextMesh>();
     }
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            keys.CurrentLayout = (Keys.Layout)(((int)keys.CurrentLayout - 1 + Keys.LayoutCount) % Keys.LayoutCount);
+            Keys.CurrentLayout = (Keys.Layout)(((int)Keys.CurrentLayout - 1 + Keys.LayoutCount) % Keys.LayoutCount);
         } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            keys.CurrentLayout = (Keys.Layout)(((int)keys.CurrentLayout + 1 + Keys.LayoutCount) % Keys.LayoutCount);
+            Keys.CurrentLayout = (Keys.Layout)(((int)Keys.CurrentLayout + 1 + Keys.LayoutCount) % Keys.LayoutCount);
         }
 
-        label.text = LAYOUT_TEXTS[(int) keys.CurrentLayout];
+        label.text = LAYOUT_TEXTS[(int) Keys.CurrentLayout];
     }
 }
