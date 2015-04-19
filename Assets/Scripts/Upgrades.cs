@@ -24,7 +24,38 @@ public class Upgrades : MonoBehaviour {
     public TextMesh[] RepairTextToColor;
     public GameObject[] RepairObjsToEnable;
 
+    public Color Affordable;
+    public Color Expensive;
+    MoneyCounter money;
+
+    public int[] PushCosts;
+    public int PushFlipCost;
+    public int[] SingleCosts;
+    public int[] AOECosts;
+    public int RepairCost;
+    public int RepairMultiplier = 1;
+
     void Start() {
+        money = FindObjectOfType<MoneyCounter>();
+    }
+
+    int CostForKey(Key key, bool leftPush, bool rightPush, bool single, bool aoe, bool repair) {
+        int cost = 0;
+        {
+            if (leftPush && !key.PushHitFlip) cost = PushFlipCost;
+            else if (leftPush && key.PushHitLevel == Key.MAX_LEVEL) cost = int.MaxValue;
+            else if (leftPush) cost = PushCosts[key.PushHitLevel];
+            else if (rightPush && key.PushHitFlip) cost = PushFlipCost;
+            else if (rightPush && key.PushHitLevel == Key.MAX_LEVEL) cost = int.MaxValue;
+            else if (rightPush) cost = PushCosts[key.PushHitLevel];
+            else if (single && key.SingleHitLevel == Key.MAX_LEVEL) cost = int.MaxValue;
+            else if (single) cost = SingleCosts[key.SingleHitLevel];
+            else if (aoe && key.AOEHitLevel == Key.MAX_LEVEL) cost = int.MaxValue;
+            else if (aoe) cost = AOECosts[key.AOEHitLevel];
+            else if (repair && !key.Dead) cost = int.MaxValue;
+            else if (repair) cost = RepairCost * RepairMultiplier;
+        }
+        return cost;
     }
 
     void Update() {
@@ -38,6 +69,9 @@ public class Upgrades : MonoBehaviour {
         var single = shift && !ctrl && !leftAlt && !rightAlt;
         var aoe = shift && ctrl && !leftAlt && !rightAlt;
         var repair = (leftAlt || rightAlt) && shift;
+        var someUpgradePressed = leftPush || rightPush || single || aoe || repair;
+
+        var currentMoney = money.Counter;
 
         // highlight stuff based on modifiers
         {
@@ -57,6 +91,17 @@ public class Upgrades : MonoBehaviour {
             for (int i = 0; i < RepairTextToColor.Length; i++) { RepairTextToColor[i].color = repair ? HighlightColor : NormalColor; }
             for (int i = 0; i < RepairObjsToEnable.Length; i++) { RepairObjsToEnable[i].SetActive(repair); }
         }
+        // highlight key text based on modifiers
+        {
+            for (int i = 0; i < keys.KeyList.Length; i++) {
+                var key = keys.KeyList[i];
+                var label = key.UpgradeLabel;
+                label.gameObject.SetActive(someUpgradePressed);
+                var cost = CostForKey(key, leftPush, rightPush, single, aoe, repair);
+                label.text = (cost == int.MaxValue) ? "MAX" : "$" + cost;
+                label.color = (cost <= currentMoney) ? Affordable : Expensive;
+            }
+        }
         // do upgrade on key press 
         {
             Key keyPressed = null;
@@ -66,24 +111,32 @@ public class Upgrades : MonoBehaviour {
                     keyPressed = keys.KeyList[i];
                 }
             }
-            if (keyPressed != null) {
-                if (leftPush) { // left push
-                    if (keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
-                        keyPressed.PushHitLevel++;
-                    if (!keyPressed.PushHitFlip)
-                        keyPressed.PushHitFlip = true;
-                } else if (rightPush) { // right push
-                    if (!keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
-                        keyPressed.PushHitLevel++;
-                    if (keyPressed.PushHitFlip)
-                        keyPressed.PushHitFlip = false;
-                } else if (single) { // single hit
-                    keyPressed.SingleHitLevel++;
-                } else if (aoe) { // aoe hit
-                    keyPressed.AOEHitLevel++;
-                } else if (repair) { // repair
-                    if (keyPressed.Dead)
-                        keyPressed.Dead = false;
+            if (someUpgradePressed && keyPressed != null) {
+                var cost = CostForKey(keyPressed, leftPush, rightPush, single, aoe, repair);
+                if (cost <= currentMoney) {
+                    if (leftPush) { // left push
+                        if (keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
+                            keyPressed.PushHitLevel++;
+                        if (!keyPressed.PushHitFlip)
+                            keyPressed.PushHitFlip = true;
+                    } else if (rightPush) { // right push
+                        if (!keyPressed.PushHitFlip || keyPressed.PushHitLevel == 0)
+                            keyPressed.PushHitLevel++;
+                        if (keyPressed.PushHitFlip)
+                            keyPressed.PushHitFlip = false;
+                    } else if (single) { // single hit
+                        keyPressed.SingleHitLevel++;
+                    } else if (aoe) { // aoe hit
+                        keyPressed.AOEHitLevel++;
+                    } else if (repair) { // repair
+                        if (keyPressed.Dead)
+                            keyPressed.Dead = false;
+                        RepairMultiplier++;
+                    }
+                    // can afford
+                    money.Counter -= cost;
+                } else {
+                    // can't afford
                 }
             }
         }

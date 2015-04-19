@@ -30,6 +30,8 @@ public class Key : MonoBehaviour {
     TextMesh label;
     SpriteRenderer border;
     SpriteRenderer border2;
+    [HideInInspector]
+    public TextMesh UpgradeLabel;
 
     SingleHit singleHit;
     AOEHit aoeHit;
@@ -37,9 +39,10 @@ public class Key : MonoBehaviour {
 
 	void Start() {
 	    animator = GetComponent<Animator>();
-        label = GetComponentInChildren<TextMesh>();
+        label = transform.FindChild("keylabel").GetComponent<TextMesh>();
         border = transform.FindChild("BorderContainer/keyborder").GetComponent<SpriteRenderer>();
         border2 = transform.FindChild("BorderContainerTapEffect/keyborder").GetComponent<SpriteRenderer>();
+        UpgradeLabel = transform.FindChild("UpgradeLabel").GetComponent<TextMesh>();
 
         singleHit = GetComponentInChildren<SingleHit>();
         aoeHit = GetComponentInChildren<AOEHit>();
