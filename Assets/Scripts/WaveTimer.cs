@@ -81,6 +81,8 @@ public class WaveTimer : MonoBehaviour {
                 if (WaveTime <= 0) {
                     WaveActive = false;
                     WaveTime = 0;
+                    if (enemyEmitter.liveEnemiesSpawned.Count == 0)
+                        EndWave(true);
                 }
             }
         }

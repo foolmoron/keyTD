@@ -63,9 +63,9 @@ public class Key : MonoBehaviour {
         border2 = transform.FindChild("BorderContainerTapEffect/keyborder").GetComponent<SpriteRenderer>();
         UpgradeLabel = transform.FindChild("UpgradeLabel").GetComponent<TextMesh>();
 
-        singleHit = GetComponentInChildren<SingleHit>();
-        aoeHit = GetComponentInChildren<AOEHit>();
-        pushHit = GetComponentInChildren<PushHit>();
+        singleHit = transform.FindChild("SingleHit").GetComponent<SingleHit>();
+        aoeHit = transform.FindChild("AOEHit").GetComponent<AOEHit>();
+        pushHit = transform.FindChild("PushHit").GetComponent<PushHit>();
 
         zapSprite = transform.FindChild("SingleHit/ZapperContainer/Zapper").GetComponent<SpriteRenderer>();
         blastSprite = transform.FindChild("AOEHit/Blast").GetComponent<SpriteRenderer>();

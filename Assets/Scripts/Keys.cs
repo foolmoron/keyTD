@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using System.Collections;
@@ -34,35 +35,34 @@ public class Keys : MonoBehaviour {
         QWERTY, AZERTY, Dvorak, Colemak
     }
     public static int LayoutCount = 4;
-    public CodeSubset[][] LayoutKeyArrangements = {
-        new [] { // qwerty
-            CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.Dash, CodeSubset.Equals,
-            CodeSubset.Q, CodeSubset.W, CodeSubset.E, CodeSubset.R, CodeSubset.T, CodeSubset.Y, CodeSubset.U, CodeSubset.I, CodeSubset.O, CodeSubset.P, CodeSubset.BracketOpen, CodeSubset.BracketClose,
-            CodeSubset.A, CodeSubset.S, CodeSubset.D, CodeSubset.F, CodeSubset.G, CodeSubset.H, CodeSubset.J, CodeSubset.K, CodeSubset.L, CodeSubset.SemiColon, CodeSubset.Apostrophe,
-            CodeSubset.Z, CodeSubset.X, CodeSubset.C, CodeSubset.V, CodeSubset.B, CodeSubset.N, CodeSubset.M, CodeSubset.Comma, CodeSubset.Period,
-            CodeSubset.Space
-        },
-        new [] { // azerty
-            CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.BracketOpen, CodeSubset.Equals,
-            CodeSubset.A, CodeSubset.Z, CodeSubset.E, CodeSubset.R, CodeSubset.T, CodeSubset.Y, CodeSubset.U, CodeSubset.I, CodeSubset.O, CodeSubset.P, CodeSubset.BracketClose, CodeSubset.SemiColon,
-            CodeSubset.Q, CodeSubset.S, CodeSubset.D, CodeSubset.F, CodeSubset.G, CodeSubset.H, CodeSubset.J, CodeSubset.K, CodeSubset.L, CodeSubset.M, CodeSubset.BackQuote,
-            CodeSubset.W, CodeSubset.X, CodeSubset.C, CodeSubset.V, CodeSubset.B, CodeSubset.N, CodeSubset.Comma, CodeSubset.Period, CodeSubset.Slash,
-            CodeSubset.Space
-        },
-        new [] { // dvorak
-            CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.BracketOpen, CodeSubset.BracketClose,
-            CodeSubset.Apostrophe, CodeSubset.Comma, CodeSubset.Period, CodeSubset.P, CodeSubset.Y, CodeSubset.F, CodeSubset.G, CodeSubset.C, CodeSubset.R, CodeSubset.L, CodeSubset.Slash, CodeSubset.Equals,
-            CodeSubset.A, CodeSubset.O, CodeSubset.E, CodeSubset.U, CodeSubset.I, CodeSubset.D, CodeSubset.H, CodeSubset.T, CodeSubset.N, CodeSubset.S, CodeSubset.Dash,
-            CodeSubset.SemiColon, CodeSubset.Q, CodeSubset.J, CodeSubset.K, CodeSubset.X, CodeSubset.B, CodeSubset.M, CodeSubset.W, CodeSubset.V,
-            CodeSubset.Space
-        },
-        new [] { // colemak
-            CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.Dash, CodeSubset.Equals,
-            CodeSubset.Q, CodeSubset.W, CodeSubset.F, CodeSubset.P, CodeSubset.G, CodeSubset.J, CodeSubset.L, CodeSubset.U, CodeSubset.Y, CodeSubset.SemiColon, CodeSubset.BracketOpen, CodeSubset.BracketClose,
-            CodeSubset.A, CodeSubset.R, CodeSubset.S, CodeSubset.T, CodeSubset.D, CodeSubset.H, CodeSubset.N, CodeSubset.E, CodeSubset.I, CodeSubset.O, CodeSubset.Apostrophe,
-            CodeSubset.Z, CodeSubset.X, CodeSubset.C, CodeSubset.V, CodeSubset.B, CodeSubset.K, CodeSubset.M, CodeSubset.Comma, CodeSubset.Period,
-            CodeSubset.Space
-        },
+    
+    public static Keys.CodeSubset[] QWERTYLayout = {
+        CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.Dash, CodeSubset.Equals,
+        CodeSubset.Q, CodeSubset.W, CodeSubset.E, CodeSubset.R, CodeSubset.T, CodeSubset.Y, CodeSubset.U, CodeSubset.I, CodeSubset.O, CodeSubset.P, CodeSubset.BracketOpen, CodeSubset.BracketClose,
+        CodeSubset.A, CodeSubset.S, CodeSubset.D, CodeSubset.F, CodeSubset.G, CodeSubset.H, CodeSubset.J, CodeSubset.K, CodeSubset.L, CodeSubset.SemiColon, CodeSubset.Apostrophe,
+        CodeSubset.Z, CodeSubset.X, CodeSubset.C, CodeSubset.V, CodeSubset.B, CodeSubset.N, CodeSubset.M, CodeSubset.Comma, CodeSubset.Period,
+        CodeSubset.Space
+    };
+    public static Keys.CodeSubset[] AZERTYLayout = {
+        CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.BracketOpen, CodeSubset.Equals,
+        CodeSubset.A, CodeSubset.Z, CodeSubset.E, CodeSubset.R, CodeSubset.T, CodeSubset.Y, CodeSubset.U, CodeSubset.I, CodeSubset.O, CodeSubset.P, CodeSubset.BracketClose, CodeSubset.SemiColon,
+        CodeSubset.Q, CodeSubset.S, CodeSubset.D, CodeSubset.F, CodeSubset.G, CodeSubset.H, CodeSubset.J, CodeSubset.K, CodeSubset.L, CodeSubset.M, CodeSubset.BackQuote,
+        CodeSubset.W, CodeSubset.X, CodeSubset.C, CodeSubset.V, CodeSubset.B, CodeSubset.N, CodeSubset.Comma, CodeSubset.Period, CodeSubset.Slash,
+        CodeSubset.Space
+    };
+    public static Keys.CodeSubset[] DvorakLayout = {
+        CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.BracketOpen, CodeSubset.BracketClose,
+        CodeSubset.Apostrophe, CodeSubset.Comma, CodeSubset.Period, CodeSubset.P, CodeSubset.Y, CodeSubset.F, CodeSubset.G, CodeSubset.C, CodeSubset.R, CodeSubset.L, CodeSubset.Slash, CodeSubset.Equals,
+        CodeSubset.A, CodeSubset.O, CodeSubset.E, CodeSubset.U, CodeSubset.I, CodeSubset.D, CodeSubset.H, CodeSubset.T, CodeSubset.N, CodeSubset.S, CodeSubset.Dash,
+        CodeSubset.SemiColon, CodeSubset.Q, CodeSubset.J, CodeSubset.K, CodeSubset.X, CodeSubset.B, CodeSubset.M, CodeSubset.W, CodeSubset.V,
+        CodeSubset.Space
+    };
+    public static Keys.CodeSubset[] ColemakLayout = {
+        CodeSubset.Num1, CodeSubset.Num2, CodeSubset.Num3, CodeSubset.Num4, CodeSubset.Num5, CodeSubset.Num6, CodeSubset.Num7, CodeSubset.Num8, CodeSubset.Num9, CodeSubset.Num0, CodeSubset.Dash, CodeSubset.Equals,
+        CodeSubset.Q, CodeSubset.W, CodeSubset.F, CodeSubset.P, CodeSubset.G, CodeSubset.J, CodeSubset.L, CodeSubset.U, CodeSubset.Y, CodeSubset.SemiColon, CodeSubset.BracketOpen, CodeSubset.BracketClose,
+        CodeSubset.A, CodeSubset.R, CodeSubset.S, CodeSubset.T, CodeSubset.D, CodeSubset.H, CodeSubset.N, CodeSubset.E, CodeSubset.I, CodeSubset.O, CodeSubset.Apostrophe,
+        CodeSubset.Z, CodeSubset.X, CodeSubset.C, CodeSubset.V, CodeSubset.B, CodeSubset.K, CodeSubset.M, CodeSubset.Comma, CodeSubset.Period,
+        CodeSubset.Space
     };
 
     public Key[] KeyList;
@@ -70,7 +70,24 @@ public class Keys : MonoBehaviour {
     int oldLayout = -1;
 
     public void SetLayout(Layout layout) {
-        var arrangement = LayoutKeyArrangements[(int) layout];
+        Keys.CodeSubset[] arrangement;
+        switch (layout) {
+        case Layout.QWERTY:
+            arrangement = QWERTYLayout;
+            break;
+        case Layout.AZERTY:
+            arrangement = AZERTYLayout;
+            break;
+        case Layout.Dvorak:
+            arrangement = DvorakLayout;
+            break;
+        case Layout.Colemak:
+            arrangement = ColemakLayout;
+            break;
+        default:
+            arrangement = QWERTYLayout;
+            break;
+        }
         for (int i = 0; i < KeyList.Length; i++) {
             KeyList[i].AssignedKey = arrangement[i];
         }

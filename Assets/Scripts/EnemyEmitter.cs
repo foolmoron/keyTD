@@ -19,7 +19,8 @@ public class EnemyEmitter : MonoBehaviour {
     [Range(0, 30)]
     public float TimeToNextSpawn;
 
-    List<Enemy> liveEnemiesSpawned = new List<Enemy>(50);
+    [HideInInspector]
+    public List<Enemy> liveEnemiesSpawned = new List<Enemy>(50);
     WaveTimer waveTimer;
 
     void Start() {
