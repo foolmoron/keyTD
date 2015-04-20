@@ -15,6 +15,8 @@ public class PushHit : MonoBehaviour {
     Animator animator;
     new Collider2D collider;
 
+    public AudioClip PushSound;
+
     GameObject arrow;
 
     void Start() {
@@ -37,6 +39,7 @@ public class PushHit : MonoBehaviour {
             transform.localScale = transform.localScale.withX(Mathf.Abs(transform.localScale.x) * (Flip ? -1 : 1));
         }
         if (enemiesHitThisFrame.Count > 0) {
+            AudioSource.PlayClipAtPoint(PushSound, Vector3.zero);
             enemiesHitThisFrame.Sort((enemy1, enemy2) => enemy1.transform.position.y.CompareTo(enemy2.transform.position.y));
             var hitEnemy = enemiesHitThisFrame[0];
             enemiesHitThisFrame.Clear();

@@ -35,6 +35,9 @@ public class Upgrades : MonoBehaviour {
     public int RepairCost;
     public int RepairMultiplier = 1;
 
+    public AudioClip CoinSound;
+    public AudioClip BadSound;
+
     void Start() {
         money = FindObjectOfType<MoneyCounter>();
     }
@@ -133,10 +136,10 @@ public class Upgrades : MonoBehaviour {
                             keyPressed.Dead = false;
                         RepairMultiplier++;
                     }
-                    // can afford
+                    AudioSource.PlayClipAtPoint(CoinSound, Vector3.zero);
                     money.Counter -= cost;
                 } else {
-                    // can't afford
+                    AudioSource.PlayClipAtPoint(BadSound, Vector3.zero);
                 }
             }
         }

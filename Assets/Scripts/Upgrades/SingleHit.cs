@@ -14,6 +14,8 @@ public class SingleHit : MonoBehaviour {
     Animator animator;
     new Collider2D collider;
 
+    public AudioClip ZapSound;
+
     GameObject zapper;
 
     void Start() {
@@ -46,6 +48,7 @@ public class SingleHit : MonoBehaviour {
                 zapper.transform.localScale = new Vector3(magnitudeToEnemy / transform.lossyScale.x, 1, 1);
                 zapper.transform.rotation = Quaternion.Euler(0, 0, angleToEnemy);
                 animator.Play("SingleHit", 0, 0);
+                AudioSource.PlayClipAtPoint(ZapSound, Vector3.zero);
             }
         }
         if (!frameDelay) {

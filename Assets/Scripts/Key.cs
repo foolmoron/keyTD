@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
 public class Key : MonoBehaviour {
@@ -48,6 +49,8 @@ public class Key : MonoBehaviour {
     float[] aoeHitDamages = { 0, 2f, 3f, 4f, 6f, 10f };
     float[] aoeHitRanges = { 0, 1f, 1.4f, 1.8f, 2.2f, 3f };
     float[] pushHitDistances = { 0, 0.1f, 0.2f, 0.35f, 0.5f, 0.8f };
+
+    public AudioClip[] KeySounds;
 
     SpriteRenderer zapSprite;
     SpriteRenderer blastSprite;
@@ -116,6 +119,8 @@ public class Key : MonoBehaviour {
 	    {
 	        if (!Dead) {
 	            if (Input.GetKeyDown(Keys.RealCodes[(int) AssignedKey])) {
+	                var rand = Mathf.FloorToInt(Random.value * KeySounds.Length);
+                    AudioSource.PlayClipAtPoint(KeySounds[rand], Vector3.zero);
 	                OnTapDown(this, AssignedKey);
 	            } else if (Input.GetKey(Keys.RealCodes[(int) AssignedKey])) {
 	                animator.Play(OnTapAnim, 0, 0);

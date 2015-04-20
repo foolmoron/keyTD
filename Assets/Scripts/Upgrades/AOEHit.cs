@@ -25,6 +25,8 @@ public class AOEHit : MonoBehaviour {
 
     SpriteRenderer blast;
 
+    public AudioClip BlastSound;
+
     void Start() {
         key = transform.parent.GetComponent<Key>();
         animator = GetComponent<Animator>();
@@ -63,6 +65,7 @@ public class AOEHit : MonoBehaviour {
         // reset timer
         {
             if (fireAOE) {
+                AudioSource.PlayClipAtPoint(BlastSound, Vector3.zero);
                 TimeToNextAOE = AOEInterval;
             }
         }

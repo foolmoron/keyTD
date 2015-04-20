@@ -18,6 +18,9 @@ public class Enemy : MonoBehaviour {
     SpriteRenderer backgroundSprite;
     TextMesh moneyText;
 
+    public AudioClip MoneySound;
+    public AudioClip KillSound;
+
     void Start() {
         keys = FindObjectOfType<Keys>();
         backgroundSprite = transform.FindChild("Background").GetComponentInChildren<SpriteRenderer>();
@@ -43,6 +46,7 @@ public class Enemy : MonoBehaviour {
             var vectorToTarget = TargetPosition - transform.position;
             if (vectorToTarget.magnitude <= 0.001f) {
                 Destroy(gameObject);
+                AudioSource.PlayClipAtPoint(KillSound, Vector3.zero);
                 for (int i = 0; i < 3; i++) { // try 3 times then give up, to give a bit of random luck
                     var randomKeyIndex = Mathf.FloorToInt(Random.value * keys.KeyList.Length);
                     if (!keys.KeyList[randomKeyIndex].Dead) {
@@ -62,6 +66,7 @@ public class Enemy : MonoBehaviour {
             moneyText.transform.rotation = Quaternion.identity;
             moneyText.gameObject.SetActive(true);
             FindObjectOfType<MoneyCounter>().Counter += Money;
+            AudioSource.PlayClipAtPoint(MoneySound, Vector3.zero);
             Destroy(gameObject);
             Destroy(moneyText.gameObject, 1);
         }
