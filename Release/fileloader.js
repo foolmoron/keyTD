@@ -15,8 +15,8 @@ Module.expectedDataFileDownloads++;
       // worker
       PACKAGE_PATH = encodeURIComponent(location.pathname.toString().substring(0, location.pathname.toString().lastIndexOf('/')) + '/');
     }
-    var PACKAGE_NAME = 'build.data';
-    var REMOTE_PACKAGE_BASE = 'build.data';
+    var PACKAGE_NAME = 'keyTD.data';
+    var REMOTE_PACKAGE_BASE = 'keyTD.data';
     if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
       Module['locateFile'] = Module['locateFilePackage'];
       Module.printErr('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
@@ -25,7 +25,7 @@ Module.expectedDataFileDownloads++;
                               Module['locateFile'](REMOTE_PACKAGE_BASE) :
                               ((Module['filePackagePrefixURL'] || '') + REMOTE_PACKAGE_BASE);
     var REMOTE_PACKAGE_SIZE = 12830665;
-    var PACKAGE_UUID = 'e09a8c60-b6ac-4efb-8bfe-fc39329bdc68';
+    var PACKAGE_UUID = '5acfa1b5-4d34-4c38-afaf-bea62803129c';
   
     function fetchRemotePackage(packageName, packageSize, callback, errback) {
       var xhr = new XMLHttpRequest();
@@ -144,10 +144,10 @@ Module['FS_createPath']('/', 'Resources', true, true);
           DataRequest.prototype.requests["/sharedassets0.resource"].onload();
           DataRequest.prototype.requests["/Resources/unity_default_resources"].onload();
           DataRequest.prototype.requests["/Resources/unity_builtin_extra"].onload();
-          Module['removeRunDependency']('datafile_build.data');
+          Module['removeRunDependency']('datafile_keyTD.data');
 
     };
-    Module['addRunDependency']('datafile_build.data');
+    Module['addRunDependency']('datafile_keyTD.data');
   
     if (!Module.preloadResults) Module.preloadResults = {};
   
