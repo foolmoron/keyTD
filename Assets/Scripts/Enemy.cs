@@ -14,10 +14,12 @@ public class Enemy : MonoBehaviour {
     [Range(0, 1000)]
     public int Money;
 
+    Keys keys;
     SpriteRenderer backgroundSprite;
     TextMesh moneyText;
 
     void Start() {
+        keys = FindObjectOfType<Keys>();
         backgroundSprite = transform.FindChild("Background").GetComponentInChildren<SpriteRenderer>();
         moneyText = transform.FindChild("MoneyText").GetComponent<TextMesh>();
         moneyText.gameObject.SetActive(false);
@@ -38,7 +40,17 @@ public class Enemy : MonoBehaviour {
         }
         // die if at target
         {
-            
+            var vectorToTarget = TargetPosition - transform.position;
+            if (vectorToTarget.magnitude <= 0.001f) {
+                Destroy(gameObject);
+                for (int i = 0; i < 3; i++) { // try 3 times then give up, to give a bit of random luck
+                    var randomKeyIndex = Mathf.FloorToInt(Random.value * keys.KeyList.Length);
+                    if (!keys.KeyList[randomKeyIndex].Dead) {
+                        keys.KeyList[randomKeyIndex].Dead = true;
+                        break;
+                    }
+                }
+            }
         }
     }
 

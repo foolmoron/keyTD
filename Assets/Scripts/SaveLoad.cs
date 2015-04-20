@@ -6,6 +6,7 @@ public class SaveLoad : MonoBehaviour {
     public Keys Keys;
     public MoneyCounter Money;
     public WaveTimer WaveTimer;
+    public Upgrades upgrades;
     
     public void Save() {
         for (int i = 0; i < Keys.KeyList.Length; i++) {
@@ -18,6 +19,7 @@ public class SaveLoad : MonoBehaviour {
         }
         PlayerPrefs.SetInt("Money", Money.Counter);
         PlayerPrefs.SetInt("WaveNumber", WaveTimer.WaveNumber);
+        PlayerPrefs.SetInt("RepairMultiplier", upgrades.RepairMultiplier);
     }
 
     public void Load() {
@@ -30,6 +32,7 @@ public class SaveLoad : MonoBehaviour {
             key.AOEHitLevel = PlayerPrefs.GetInt("Key" + i + "AOEHitLevel", 0);
         }
         Money.Counter = PlayerPrefs.GetInt("Money", 0);
+        upgrades.RepairMultiplier = PlayerPrefs.GetInt("RepairMultiplier", 1);
         WaveTimer.WaveNumber = PlayerPrefs.GetInt("WaveNumber", 1) - 1;
         WaveTimer.EndWave(false);
     }
