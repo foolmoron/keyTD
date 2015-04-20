@@ -9,7 +9,17 @@
     <script src="TemplateData/UnityProgress.js"></script>
   </head>
   <body class="template">
+    <p style="text-align: center; text-size: 32px; font-weight: bold"><span>Unity WebGL Player | </span>KeyTD</p>
+    <p style="text-align: center; text-size: 20px; font-weight: bold">by <a href="https://twitter.com/foolmoron">@foolmoron</a></p>
+    <p style="text-align: center; text-size: 20px;">THIS IS GLITCHY! You might need to open the Chrome Dev Tools to get it to load without crashing...</p>
+    <p style="text-align: center; text-size: 20px;">Please try another build on the <a href="http://ludumdare.com/compo/ludum-dare-32/?action=preview&uid=36186">Ludum Dare 32</a> page if this doesn't work.</p>
+    <div class="template-wrap clear">
     <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="900px"></canvas>
+      <div class="logo"></div>
+      <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
+      <div class="title">KeyTD</div>
+    </div>
+    <p class="footer">&laquo; created with <a href="http://unity3d.com/" title="Go to unity3d.com">Unity</a> &raquo;</p>
     <script type='text/javascript'>
   // connect to canvas
   var Module = {
