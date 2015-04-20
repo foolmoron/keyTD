@@ -51,8 +51,11 @@ public class WaveTimer : MonoBehaviour {
     }
 
     public void StartNextWave() {
+        var difficulty = (int)(WaveNumber / 5);
         enemyEmitter.EnemyPrefab = EnemyPrefabs[(int)(WaveType)];
-        enemyEmitter.EnemySpawnInterval = EnemySpawnInterval[(int)(WaveType)];
+        enemyEmitter.EnemySpawnInterval = EnemySpawnInterval[(int)(WaveType)] / (1 + (difficulty / 4f));
+        enemyEmitter.HealthModifier = 1 + (difficulty / 4f);
+        enemyEmitter.MoneyModifier = 1 + (difficulty / 2f);
         enemyEmitter.TimeToNextSpawn = 0; // instantly spawn 1 always
         WaveActive = true;
     }

@@ -21,10 +21,11 @@ public class Enemy : MonoBehaviour {
         backgroundSprite = transform.FindChild("Background").GetComponentInChildren<SpriteRenderer>();
         moneyText = transform.FindChild("MoneyText").GetComponent<TextMesh>();
         moneyText.gameObject.SetActive(false);
-        initialHealth = Health;
     }
 
     void Update() {
+        if (initialHealth == 0)
+            initialHealth = Health;
         // move and rotate to target
         {
             transform.position = Vector3.MoveTowards(transform.position, TargetPosition, Speed * Time.deltaTime);

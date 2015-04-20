@@ -8,6 +8,10 @@ public class EnemyEmitter : MonoBehaviour {
     public Vector2 EnemySpawnVariance;
     public Transform EnemyTarget;
     public Vector2 EnemyTargetVariance;
+    [Range(0, 10)]
+    public float HealthModifier = 1;
+    [Range(0, 10)]
+    public float MoneyModifier = 1;
 
     public bool SpawningEnemies;
     [Range(0, 60)]
@@ -48,6 +52,8 @@ public class EnemyEmitter : MonoBehaviour {
         var newEnemy = (Enemy)Instantiate(EnemyPrefab, transform.position + spawnVariance, Quaternion.identity);
         var targetVariance = new Vector3((Random.value - 0.5f) * EnemyTargetVariance.x, (Random.value - 0.5f) * EnemyTargetVariance.y);
         newEnemy.TargetPosition = EnemyTarget.position + targetVariance;
+        newEnemy.Health *= HealthModifier;
+        newEnemy.Money = Mathf.FloorToInt(newEnemy.Money * MoneyModifier);
         liveEnemiesSpawned.Add(newEnemy);
         TimeToNextSpawn = EnemySpawnInterval;
     }
