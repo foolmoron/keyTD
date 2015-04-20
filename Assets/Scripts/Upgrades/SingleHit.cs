@@ -6,7 +6,7 @@ using System.Collections;
 public class SingleHit : MonoBehaviour {
 
     [Range(0, 10)]
-    public int Damage = 1;
+    public float Damage = 1;
     List<Enemy> enemiesHitThisFrame = new List<Enemy>(10);
     bool frameDelay;
 

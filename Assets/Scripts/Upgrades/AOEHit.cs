@@ -6,9 +6,9 @@ using System.Collections;
 public class AOEHit : MonoBehaviour {
 
     [Range(0, 10)]
-    public int Damage = 1;
+    public float Damage = 1;
     [Range(0, 10)]
-    public int Range = 1;
+    public float Range = 1;
     [Range(0, 10)]
     public float AOEInterval = 1;
     [Range(0, 10)]

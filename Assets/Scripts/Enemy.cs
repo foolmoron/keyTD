@@ -36,9 +36,13 @@ public class Enemy : MonoBehaviour {
         {
             backgroundSprite.color = backgroundSprite.color.withAlpha(Health / initialHealth);
         }
+        // die if at target
+        {
+            
+        }
     }
 
-    public void Hit(int damage) {
+    public void Hit(float damage) {
         Health -= damage;
         if (Health <= 0) {
             moneyText.text = "$" + Money;

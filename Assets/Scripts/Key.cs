@@ -44,6 +44,10 @@ public class Key : MonoBehaviour {
     SingleHit singleHit;
     AOEHit aoeHit;
     PushHit pushHit;
+    float[] singleHitDamages = { 0, 1f, 1.5f, 2f, 3f, 4f};
+    float[] aoeHitDamages = { 0, 2f, 3f, 4f, 6f, 10f };
+    float[] aoeHitRanges = { 0, 1f, 1.4f, 1.8f, 2.2f, 3f };
+    float[] pushHitDistances = { 0, 0.1f, 0.2f, 0.35f, 0.5f, 0.8f };
 
     SpriteRenderer zapSprite;
     SpriteRenderer blastSprite;
@@ -102,6 +106,11 @@ public class Key : MonoBehaviour {
             aoeHit.gameObject.SetActive(AOEHitLevel > 0);
             pushHit.gameObject.SetActive(PushHitLevel > 0);
             pushHit.Flip = PushHitFlip;
+
+            singleHit.Damage = singleHitDamages[SingleHitLevel];
+            aoeHit.Damage = aoeHitDamages[AOEHitLevel];
+            aoeHit.Range = aoeHitRanges[AOEHitLevel];
+            pushHit.Distance = pushHitDistances[PushHitLevel];
         }
         // fire events and anim
 	    {
