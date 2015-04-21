@@ -45,10 +45,10 @@ public class Upgrades : MonoBehaviour {
     int CostForKey(Key key, bool leftPush, bool rightPush, bool single, bool aoe, bool repair) {
         int cost = 0;
         {
-            if (leftPush && !key.PushHitFlip) cost = PushFlipCost;
+            if (leftPush && key.PushHitLevel != 0 && !key.PushHitFlip) cost = PushFlipCost;
             else if (leftPush && key.PushHitLevel == Key.MAX_LEVEL) cost = int.MaxValue;
             else if (leftPush) cost = PushCosts[key.PushHitLevel];
-            else if (rightPush && key.PushHitFlip) cost = PushFlipCost;
+            else if (rightPush && key.PushHitLevel != 0 && key.PushHitFlip) cost = PushFlipCost;
             else if (rightPush && key.PushHitLevel == Key.MAX_LEVEL) cost = int.MaxValue;
             else if (rightPush) cost = PushCosts[key.PushHitLevel];
             else if (single && key.SingleHitLevel == Key.MAX_LEVEL) cost = int.MaxValue;
@@ -62,16 +62,17 @@ public class Upgrades : MonoBehaviour {
     }
 
     void Update() {
+        var up = Input.GetKey(KeyCode.UpArrow);
+        var down = Input.GetKey(KeyCode.DownArrow);
+        var left = Input.GetKey(KeyCode.LeftArrow);
+        var right = Input.GetKey(KeyCode.RightArrow);
         var shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        var ctrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-        var leftAlt = Input.GetKey(KeyCode.LeftAlt);
-        var rightAlt = Input.GetKey(KeyCode.RightAlt);
 
-        var leftPush = ctrl && leftAlt && !shift;
-        var rightPush = ctrl && !leftAlt && rightAlt && !shift;
-        var single = shift && !ctrl && !leftAlt && !rightAlt;
-        var aoe = shift && ctrl && !leftAlt && !rightAlt;
-        var repair = (leftAlt || rightAlt) && shift;
+        var leftPush = left && !right && !up && !down && !shift;
+        var rightPush = !left && right && !up && !down && !shift;
+        var single = !left && !right && up && !down && !shift;
+        var aoe = !left && !right && !up && down && !shift;
+        var repair = !left && !right && !up && !down && shift;
         var someUpgradePressed = leftPush || rightPush || single || aoe || repair;
 
         var currentMoney = money.Counter;

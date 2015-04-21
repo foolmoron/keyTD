@@ -46,7 +46,7 @@ public class Key : MonoBehaviour {
     AOEHit aoeHit;
     PushHit pushHit;
     float[] singleHitDamages = { 0, 1f, 1.5f, 2f, 3f, 4f};
-    float[] aoeHitDamages = { 0, 2f, 3f, 4f, 6f, 10f };
+    float[] aoeHitDamages = { 0, 4f, 8f, 13f, 20f, 32f };
     float[] aoeHitRanges = { 0, 1f, 1.4f, 1.8f, 2.2f, 3f };
     float[] pushHitDistances = { 0, 0.1f, 0.2f, 0.35f, 0.5f, 0.8f };
 
