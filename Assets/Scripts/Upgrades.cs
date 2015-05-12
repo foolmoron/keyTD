@@ -66,7 +66,11 @@ public class Upgrades : MonoBehaviour {
         var down = Input.GetKey(KeyCode.DownArrow);
         var left = Input.GetKey(KeyCode.LeftArrow);
         var right = Input.GetKey(KeyCode.RightArrow);
+#if UNITY_WEBGL
+        var shift = Input.GetKey(KeyCode.LeftShift);
+#else
         var shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+#endif
 
         var leftPush = left && !right && !up && !down && !shift;
         var rightPush = !left && right && !up && !down && !shift;
