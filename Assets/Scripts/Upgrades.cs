@@ -114,7 +114,7 @@ public class Upgrades : MonoBehaviour {
         {
             Key keyPressed = null;
             for (int i = 0; i < keys.KeyList.Length; i++) {
-                var code = Keys.RealCodes[i];
+                var code = Keys.RealCodes[(int)keys.KeyList[i].AssignedKey];
                 if (Input.GetKeyDown(code)) {
                     keyPressed = keys.KeyList[i];
                 }

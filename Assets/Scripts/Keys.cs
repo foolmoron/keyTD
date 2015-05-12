@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Keys : MonoBehaviour {
-    public enum CodeSubset {
+    public enum CodeSubset: int {
         Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9, Num0, Dash, Equals,
         Q, W, E, R, T, Y, U, I, O, P, BracketOpen, BracketClose,
         A, S, D, F, G, H, J, K, L, SemiColon, Apostrophe,
